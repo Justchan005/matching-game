@@ -1,0 +1,42 @@
+.online-panel { padding: 23px 28px; margin-bottom: 24px; background: #eeefe7; }
+.online-top, .shared-event-heading, .shared-toolbar, .share-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+.online-top h2 { margin-top: 9px; font-size: 23px; }
+.online-top p:not(.panel-kicker) { margin-top: 9px; font-size: 13px; color: var(--muted); }
+.online-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+.online-actions .button { white-space: nowrap; }
+#shared-event-details { border-top: 1px solid var(--line); padding-top: 20px; margin-top: 22px; }
+.shared-event-heading h3 { font-size: 23px; overflow-wrap: anywhere; }
+.shared-event-heading .chip { flex-shrink: 0; }
+.share-row { align-items: flex-end; margin: 17px 0 10px; }
+.share-row .field { flex: 1; min-width: 0; }
+.share-row input { font: 12px/1.5 var(--mono); }
+.shared-toolbar { margin-top: 10px; flex-wrap: wrap; }
+#shared-status { color: #5d6a50; font-size: 11px; }
+#shared-status.shared-status-error { color: #9c3d25; }
+.shared-toolbar .text-button { font-size: 11px; }
+.online-form { display: grid; gap: 17px; }
+.online-form > p { color: var(--muted); font-size: 13px; line-height: 1.7; }
+#host-signout { justify-self: start; }
+#join-code { font-family: var(--mono); }
+body.projector-mode .site-header, body.projector-mode .intro, body.projector-mode .game-layout, body.projector-mode .page-footer { display: none; }
+body.projector-mode .page-shell { max-width: 1440px; padding-top: 28px; }
+body.projector-mode .online-top { display: none; }
+body.projector-mode #shared-event-details { border: 0; margin-top: 0; padding-top: 0; }
+body.projector-mode .leaderboard { background: #fffefa; }
+body.projector-mode .leaderboard .section-heading h2 { font-size: clamp(25px, 4vw, 44px); }
+body.projector-mode .leaderboard-row { padding: 22px 0; }
+body.projector-mode .entry-name { font-size: clamp(18px, 3vw, 32px); }
+body.projector-mode .entry-score { font-size: clamp(18px, 3vw, 30px); }
+body.projector-mode .rank { font-size: 20px; width: 38px; }
+body.projector-mode .leaderboard-row:first-child .rank { color: var(--orange); }
+@media (max-width: 760px) {
+  .online-panel { padding: 21px; }
+  .online-top { align-items: flex-start; flex-direction: column; }
+  .shared-event-heading { flex-wrap: wrap; }
+  .share-row { flex-wrap: wrap; }
+  .share-row .field { flex-basis: 100%; }
+  .online-actions { gap: 10px; }
+  .shared-toolbar { gap: 8px; }
+  .shared-toolbar .online-actions { gap: 14px; }
+  body.projector-mode .entry-score { white-space: normal; text-align: right; }
+}

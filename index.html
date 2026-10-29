@@ -8,6 +8,7 @@
   <title>Flow State — Find the right sequence</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23f15533'/%3E%3Cpath d='M18 19h28M18 32h20M18 45h12' stroke='white' stroke-width='7'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="online.css">
   <script type="module" src="app.mjs"></script>
 </head>
 <body>
@@ -40,7 +41,7 @@
         <div class="scenario-meta"><span class="chip" id="step-count">9 steps</span><span class="chip">No time limit</span><span class="chip">Solo or team</span></div>
         <form class="setup-fields" id="round-form">
           <div class="field"><label for="scenario-select">Choose a scenario</label><select id="scenario-select" required></select></div>
-          <div class="field"><label for="player-name">Player or team name <span class="help-text">(optional)</span></label><input id="player-name" type="text" maxlength="30" placeholder="e.g. The Dream Team" autocomplete="off"></div>
+          <div class="field"><label for="player-name">Player or team name <span class="help-text" id="name-optional">(optional)</span></label><input id="player-name" type="text" maxlength="30" placeholder="e.g. The Dream Team" autocomplete="off"><p class="help-text" id="public-name-note" hidden>Your name and score will be visible to anyone with this event link.</p></div>
           <button class="button primary" id="start-round" type="submit">Start round <span aria-hidden="true">→</span></button>
         </form>
         <div class="briefing-footer"><p class="panel-kicker">FIND YOUR FLOW IN 3 STEPS</p><ol class="how-it-works"><li><span class="step-dot">1</span>Read the scenario together.</li><li><span class="step-dot">2</span>Arrange the cards, first to last.</li><li><span class="step-dot">3</span>Check your flow and get your score.</li></ol></div>
@@ -59,17 +60,17 @@
     </div>
 
     <section class="leaderboard panel" aria-labelledby="leaderboard-title">
-      <div class="section-heading"><div><p class="panel-kicker">A LITTLE FRIENDLY COMPETITION</p><h2 id="leaderboard-title">Round highlights</h2></div><span class="chip">This device only</span></div>
+      <div class="section-heading"><div><p class="panel-kicker">A LITTLE FRIENDLY COMPETITION</p><h2 id="leaderboard-title">Round highlights</h2></div><span class="chip" id="leaderboard-scope">This device only</span></div>
       <p class="empty-state" id="empty-scores">Your first round starts the story. Play to add your team here.</p>
       <ol class="leaderboard-list" id="leaderboard-list"></ol>
-      <p class="help-text">Best 8 rounds for the selected scenario. Scores come first; faster times break ties.</p>
+      <p class="help-text" id="leaderboard-caption">Best 8 rounds for the selected scenario. Scores come first; faster times break ties.</p>
     </section>
     <footer class="page-footer"><span>Made for a little friendly competition.</span><span>READ. REORDER. REVEAL.</span></footer>
   </main>
 
   <dialog class="modal" id="help-dialog" aria-labelledby="help-title">
     <div class="modal-header"><h2 id="help-title">Find your flow.</h2><button class="close-button" type="button" data-close="help-dialog" aria-label="Close instructions">×</button></div>
-    <div class="modal-body"><p>Choose a scenario and play solo, or gather your team around one screen.</p><ol class="answer-list"><li>Read the situation, enter a team name if you like, then press <strong>Start round</strong>.</li><li>Put the shuffled steps in order from top to bottom. Drag on a computer, or use the up and down buttons on any device.</li><li>Press <strong>Check my flow</strong> when you agree on the sequence.</li></ol><p>You earn points for each step in the correct position, up to 100. The timer is for fun and breaks score ties; there is no time limit.</p><p>Use <strong>Add your scenario</strong> to enter your event’s situation and correct steps. Scenarios and round highlights stay in this browser. They are not shared between devices.</p><p class="help-text">Each scenario is scored against the host’s intended order. Talk through the revealed sequence together after your round.</p></div>
+    <div class="modal-body"><p>Play on this device, or join a shared event to compete with players on other phones.</p><ol class="answer-list"><li>Read the situation, enter your name, then press <strong>Start round</strong>.</li><li>Put the shuffled steps in order from top to bottom. Drag on a computer, or use the up and down buttons on any device.</li><li>Press <strong>Check my flow</strong> when you agree on the sequence.</li></ol><p>You earn points for each step in the correct position, up to 100. Elapsed time breaks score ties; there is no round time limit.</p><p>In a shared event, the server checks your answer and records your name, score, and time. The leaderboard refreshes every five seconds. In local play, scores stay in this browser.</p><p>Use <strong>Add your scenario</strong> in local mode to prepare your own scenario. A signed-in host can then choose it when creating a shared event.</p><p class="help-text">Each scenario is scored against the host’s intended order. Talk through the revealed sequence together after your round.</p></div>
     <div class="modal-footer"><button class="button primary" type="button" data-close="help-dialog">Got it <span aria-hidden="true">→</span></button></div>
   </dialog>
 

@@ -5,7 +5,9 @@
   "description": "A customizable scenario sequencing game for events.",
   "scripts": {
     "start": "python3 -m http.server 3000 --bind 0.0.0.0",
-    "test": "node --test game-core.test.mjs"
+    "test": "node --test game-core.test.mjs online-api.test.mjs scripts/build-pages.test.mjs",
+    "test:db": "node --test supabase/tests/backend.test.mjs",
+    "build": "node scripts/build-pages.mjs"
   },
   "engines": { "node": ">=20" }
 }
