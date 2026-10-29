@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f6f2">
+  <meta name="description" content="Read the scenario. Connect the steps. Find your flow. A customizable game for your next event.">
+  <title>Flow State — Find the right sequence</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23f15533'/%3E%3Cpath d='M18 19h28M18 32h20M18 45h12' stroke='white' stroke-width='7'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.mjs"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="Flow State home">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="brand-name">flow state<span class="brand-caption">THE SCENARIO GAME</span></span>
+    </a>
+    <nav class="header-actions" aria-label="Game tools">
+      <button class="text-button" id="help-button" type="button">How to play</button>
+      <button class="button secondary" id="customize-button" type="button"><span aria-hidden="true">＋</span> Add your scenario</button>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> A LITTLE LOGIC. A LOT OF TEAMWORK.</p>
+      <h1 id="page-title">Every story has a flow.<br><span class="accent">Can you find it?</span></h1>
+      <p class="intro-copy">One scenario. A handful of mixed-up steps. Put them in the right order and see how your team thinks.</p>
+    </section>
+
+    <div id="notice" class="notice" role="status" hidden></div>
+    <div class="game-layout">
+      <aside class="briefing panel" aria-labelledby="scenario-title">
+        <div class="panel-kicker"><span>THE SCENARIO</span><span class="scenario-number" id="scenario-number">01 / 01</span></div>
+        <div class="flow-illustration" aria-hidden="true"><span class="mini-step">01</span><span class="mini-line">→</span><span class="mini-step">02</span><span class="mini-line">→</span><span class="mini-step">03</span><span class="mini-line">✓</span></div>
+        <p class="scenario-category" id="scenario-category">EVENT DAY</p>
+        <h2 class="scenario-title" id="scenario-title"></h2>
+        <p class="scenario-description" id="scenario-description"></p>
+        <div class="scenario-meta"><span class="chip" id="step-count">9 steps</span><span class="chip">No time limit</span><span class="chip">Solo or team</span></div>
+        <form class="setup-fields" id="round-form">
+          <div class="field"><label for="scenario-select">Choose a scenario</label><select id="scenario-select" required></select></div>
+          <div class="field"><label for="player-name">Player or team name <span class="help-text">(optional)</span></label><input id="player-name" type="text" maxlength="30" placeholder="e.g. The Dream Team" autocomplete="off"></div>
+          <button class="button primary" id="start-round" type="submit">Start round <span aria-hidden="true">→</span></button>
+        </form>
+        <div class="briefing-footer"><p class="panel-kicker">FIND YOUR FLOW IN 3 STEPS</p><ol class="how-it-works"><li><span class="step-dot">1</span>Read the scenario together.</li><li><span class="step-dot">2</span>Arrange the cards, first to last.</li><li><span class="step-dot">3</span>Check your flow and get your score.</li></ol></div>
+      </aside>
+
+      <section class="board panel" aria-labelledby="board-title">
+        <div class="board-header"><div class="board-heading"><p class="panel-kicker">CONNECT THE DOTS</p><h2 id="board-title">Build your sequence</h2><p>Drag the cards or use the arrows to reorder.</p></div><div class="timer"><span class="timer-label">ELAPSED</span><span id="timer" aria-label="Elapsed time">00:00</span></div></div>
+        <div class="round-status"><span class="status-dot" aria-hidden="true"></span><span id="round-status" role="status">Ready when you are. Start a round to begin.</span></div>
+        <ol class="flow-list" id="flow-list" aria-label="Your sequence of steps"></ol>
+        <div class="board-footer"><span class="progress-caption" id="progress-caption">FIRST STEP ↑ &nbsp; LAST STEP ↓</span><div class="board-buttons"><button class="button secondary" id="reset-round" type="button" hidden>Reset round</button><button class="button primary" id="submit-flow" type="button" disabled>Check my flow <span aria-hidden="true">→</span></button></div></div>
+        <section class="result-panel" id="result-panel" aria-labelledby="result-title" hidden>
+          <div class="result-summary"><div class="score-ring"><span class="score-value" id="score-value">0</span><span>/ 100</span></div><div class="result-copy"><p class="panel-kicker">YOUR RESULT</p><h3 id="result-title" tabindex="-1"></h3><p id="result-description"></p></div></div>
+          <h4>The intended sequence</h4><ol class="answer-list" id="answer-list"></ol><p class="help-text" id="explanation"></p>
+        </section>
+      </section>
+    </div>
+
+    <section class="leaderboard panel" aria-labelledby="leaderboard-title">
+      <div class="section-heading"><div><p class="panel-kicker">A LITTLE FRIENDLY COMPETITION</p><h2 id="leaderboard-title">Round highlights</h2></div><span class="chip">This device only</span></div>
+      <p class="empty-state" id="empty-scores">Your first round starts the story. Play to add your team here.</p>
+      <ol class="leaderboard-list" id="leaderboard-list"></ol>
+      <p class="help-text">Best 8 rounds for the selected scenario. Scores come first; faster times break ties.</p>
+    </section>
+    <footer class="page-footer"><span>Made for a little friendly competition.</span><span>READ. REORDER. REVEAL.</span></footer>
+  </main>
+
+  <dialog class="modal" id="help-dialog" aria-labelledby="help-title">
+    <div class="modal-header"><h2 id="help-title">Find your flow.</h2><button class="close-button" type="button" data-close="help-dialog" aria-label="Close instructions">×</button></div>
+    <div class="modal-body"><p>Choose a scenario and play solo, or gather your team around one screen.</p><ol class="answer-list"><li>Read the situation, enter a team name if you like, then press <strong>Start round</strong>.</li><li>Put the shuffled steps in order from top to bottom. Drag on a computer, or use the up and down buttons on any device.</li><li>Press <strong>Check my flow</strong> when you agree on the sequence.</li></ol><p>You earn points for each step in the correct position, up to 100. The timer is for fun and breaks score ties; there is no time limit.</p><p>Use <strong>Add your scenario</strong> to enter your event’s situation and correct steps. Scenarios and round highlights stay in this browser. They are not shared between devices.</p><p class="help-text">Each scenario is scored against the host’s intended order. Talk through the revealed sequence together after your round.</p></div>
+    <div class="modal-footer"><button class="button primary" type="button" data-close="help-dialog">Got it <span aria-hidden="true">→</span></button></div>
+  </dialog>
+
+  <dialog class="modal" id="custom-dialog" aria-labelledby="custom-title">
+    <form id="custom-form">
+      <div class="modal-header"><h2 id="custom-title">Make it your scenario.</h2><button class="close-button" type="button" data-close="custom-dialog" aria-label="Close scenario editor">×</button></div>
+      <div class="modal-body"><p>Set up your scenario before the players take their turn.</p><div class="field"><label for="custom-name">Scenario title</label><input id="custom-name" name="title" maxlength="80" required placeholder="e.g. The unexpected guest"></div><div class="field"><label for="custom-description">What is happening?</label><textarea id="custom-description" name="description" rows="3" maxlength="500" required placeholder="Describe the situation your players need to solve."></textarea></div><div class="field"><label for="custom-steps">Steps in the correct order</label><textarea id="custom-steps" name="steps" rows="7" required aria-describedby="steps-help" placeholder="First action&#10;Second action&#10;Third action"></textarea><p class="help-text" id="steps-help">One step per line. Add 3–12 unique steps, up to 160 characters each. We’ll shuffle them for players.</p></div><p class="form-error" id="custom-error" role="alert" hidden></p><p class="help-text">Saved on this device. For a shared-device game, prepare this before your audience arrives.</p></div>
+      <div class="modal-footer"><button class="button secondary" type="button" data-close="custom-dialog">Cancel</button><button class="button primary" type="submit">Save scenario <span aria-hidden="true">→</span></button></div>
+    </form>
+  </dialog>
+  <div class="sr-only" id="move-announcement" aria-live="polite" aria-atomic="true"></div>
+  <noscript>This game needs JavaScript enabled in your browser.</noscript>
+</body>
+</html>
