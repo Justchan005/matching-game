@@ -57,7 +57,7 @@ Create the event less than seven days before participants will scan its QR code.
 
 QR codes are generated locally in the browser using the vendored `qrcode-generator` 2.0.4 library (MIT). See [qrcode-generator.LICENSE](qrcode-generator.LICENSE). Generating a QR code does not contact a third-party QR service.
 
-Each shared event has its own top 20 rounds; local practice keeps its separate best eight rounds in browser storage. Names are display labels rather than verified identities, and repeat attempts appear separately. Reloading the player page abandons an unfinished round.
+The player, admin, and projector leaderboards display the top five rounds. Local practice also shows its top five, while retaining up to eight rounds in browser storage. Names are display labels rather than verified identities, and repeat attempts appear separately. Reloading the player page abandons an unfinished round.
 
 ## Validate
 

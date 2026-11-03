@@ -64,7 +64,7 @@ The admin can still copy the player link for participants who prefer to open a l
 
 To return to an existing event later, sign in on the admin page and enter its event code. You can also open `admin.html?event=EVENT_CODE` and sign in. Only the event's owner can close it. Admin sign-in sessions are kept in memory, so reloading the page requires signing in again. Keep participant links and event codes for the events you want to manage.
 
-The leaderboard contains the best 20 completed rounds for that event, ordered by score and then elapsed time. Repeat plays appear as separate rounds; names are display labels, not verified identities. A submitted round is recorded only once, including when a browser retries after a connection failure. A connection is required for shared events; local practice remains available separately.
+The player, admin, and projector leaderboards display the best five completed rounds for that event, ordered by score and then elapsed time. This display limit does not delete saved results. Repeat plays appear as separate rounds; names are display labels, not verified identities. A submitted round is recorded only once, including when a browser retries after a connection failure. A connection is required for shared events; local practice remains available separately.
 
 Only the server calculates a shared round's score and elapsed time. Editing browser score values cannot change the recorded result. This is an event game rather than an exam platform: participants can still share answers with one another after seeing their results.
 

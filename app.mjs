@@ -68,13 +68,13 @@ function renderOptions() {
 }
 
 function renderScores() {
-  const selected = sharedEvent ? sharedScores : scores.filter((entry) => entry.scenarioId === scenario.id)
-    .sort((a, b) => b.score - a.score || a.seconds - b.seconds).slice(0, 8);
+  const selected = (sharedEvent ? sharedScores : scores.filter((entry) => entry.scenarioId === scenario.id)
+    .sort((a, b) => b.score - a.score || a.seconds - b.seconds)).slice(0, 5);
   $('leaderboard-title').textContent = sharedEvent ? 'Live leaderboard' : 'Round highlights';
   $('leaderboard-scope').textContent = sharedEvent ? 'All players in this event' : 'This device only';
   $('leaderboard-caption').textContent = sharedEvent
-    ? 'Best 20 rounds in this event. Scores come first; faster times break ties. Updates every 5 seconds.'
-    : 'Best 8 rounds for the selected scenario. Scores come first; faster times break ties.';
+    ? 'Top 5 rounds in this event. Scores come first; faster times break ties. Updates every 5 seconds.'
+    : 'Top 5 rounds for the selected scenario. Scores come first; faster times break ties.';
   $('empty-scores').textContent = sharedEvent ? 'No completed rounds yet. Be the first to find your flow.' : 'Your first round starts the story. Play to add your team here.';
   $('empty-scores').hidden = selected.length > 0;
   $('leaderboard-list').replaceChildren(...selected.map((entry, index) => {

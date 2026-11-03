@@ -115,7 +115,7 @@ async function refreshScores() {
       if (!session || version !== eventVersion) return;
       if (!Array.isArray(rows)) throw new Error('The scoreboard response was incomplete. Try refreshing.');
       $('admin-empty-scores').hidden = rows.length > 0;
-      $('admin-leaderboard').replaceChildren(...rows.map((row, index) => {
+      $('admin-leaderboard').replaceChildren(...rows.slice(0, 5).map((row, index) => {
         const entry = node('li', 'leaderboard-row');
         entry.append(node('span', 'rank', String(index + 1)), node('span', 'entry-name', row.name), node('span', 'entry-score', `${row.score} / 100 · ${formatTime(row.seconds)}`));
         return entry;
