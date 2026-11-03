@@ -2,10 +2,10 @@
 
 A browser game for an event: read a scenario, arrange shuffled steps, and check the sequence. The included patient journey uses the nine steps supplied by the event organiser.
 
-Shared events let people play from separate phones with one live leaderboard. The admin signs in on a separate page, creates an event, and shares its player link. Supabase checks each submitted sequence and records the score and elapsed time. The leaderboard refreshes every five seconds and includes a projector view. Local practice still works on one device.
+Shared events let people play from separate phones with one live leaderboard. The admin signs in on a separate page, creates an event, and displays or prints its QR code. Players scan it to join that event directly, enter their display name, and start the round. They do not type an event code or need an account. Supabase checks each submitted sequence and records the score and elapsed time. The leaderboard refreshes every five seconds and includes a projector view. Local practice is available separately.
 
-- [Player page](https://justchan005.github.io/matching-game/): join an event, arrange the steps, and view scores. Players do not need an account.
-- [Admin page](https://justchan005.github.io/matching-game/admin.html): sign in, prepare scenarios, create events, share player links, and close new entries.
+- [Player page](https://justchan005.github.io/matching-game/): follow the event QR code or invitation link, arrange the steps, and view scores. Opening the page without an event shows scanning instructions and an explicit practice option.
+- [Admin page](https://justchan005.github.io/matching-game/admin.html): sign in, prepare scenarios, create events, display/download/print event QR codes, share player links, and close new entries.
 
 The admin page uses the existing Supabase host email and password. Splitting the pages requires no new account or database migration if the shared-event setup is already complete. Event management remains protected by Supabase authentication and server-side ownership checks.
 
@@ -26,7 +26,7 @@ On Windows, run `py -3 -m http.server 3000 --bind 0.0.0.0` from the game folder.
 
 ## Play on one device
 
-1. Choose a scenario and optionally enter a player or team name.
+1. Open the player page without an event and choose **Try a practice round**. Choose a scenario and optionally enter a player or team name.
 2. Start the round. Put the cards in order by dragging with a mouse or using the up/down buttons with touch or keyboard.
 3. Check the flow to receive a score and see the intended answer.
 4. Change the name and choose **Play again** for the next player or team.
@@ -49,7 +49,13 @@ The default sequence is:
 
 Open the **Admin page** and sign in to prepare a custom scenario. Enter a title, description, and 3–12 distinct steps in the intended order. Scenario drafts are saved in this browser's local storage; the game shuffles the steps for players. If browser storage is unavailable, drafts remain available only while the page is open.
 
-To share a scenario across devices, select it when creating an event on the admin page, then copy the generated player link. The link opens the player page with the event code, for example `/?event=EVENT_CODE`; it never sends players to the admin page. The shared copy is stored on the server and cannot be edited mid-event. The admin can reopen an existing event by its code to view results and close new entries. A projector link opens the player leaderboard with `?event=EVENT_CODE&view=leaderboard`.
+To share a scenario across devices, select it when creating an event on the admin page. The event panel displays a QR code for its specific player invitation link. Use **Download QR** to save an SVG for your event materials, or **Print QR** for a printable poster. Players scan it with their phone camera and open the link to join automatically, then enter their name and select **Start round**. Scanning alone does not start the timer.
+
+The QR code must contain the event's invitation link, such as `https://justchan005.github.io/matching-game/?event=EVENT_CODE`, rather than the generic player page or admin page. Copying and sharing the player link still works. The shared scenario is stored on the server and cannot be edited mid-event. The admin can reopen an existing event by its code or link to view results and close new entries. A projector link opens the player leaderboard with `?event=EVENT_CODE&view=leaderboard`.
+
+Create the event less than seven days before participants will scan its QR code. Events expire seven days after creation, and closing an event also stops new rounds through its QR code. A new event has a new invitation link and QR code.
+
+QR codes are generated locally in the browser using the vendored `qrcode-generator` 2.0.4 library (MIT). See [qrcode-generator.LICENSE](qrcode-generator.LICENSE). Generating a QR code does not contact a third-party QR service.
 
 Each shared event has its own top 20 rounds; local practice keeps its separate best eight rounds in browser storage. Names are display labels rather than verified identities, and repeat attempts appear separately. Reloading the player page abandons an unfinished round.
 
@@ -59,8 +65,8 @@ Each shared event has its own top 20 rounds; local practice keeps its separate b
 npm test
 ```
 
-The Node tests cover game logic, Supabase requests and public-key validation, and static deployment output. `npm run test:db` uses Docker to run database permission and scoring tests against an isolated PostgreSQL container; it does not modify the hosted project. Browser checks during development exercise local and shared gameplay, reordering, submission retry, answer reveal, host controls, and responsive layouts. Python Playwright and Chromium are validation tools, not app dependencies. Live project checks require the dashboard setup in HOSTING.md.
+The Node tests cover game logic, Supabase requests and public-key validation, QR encoding, and static deployment output. `npm run test:db` uses Docker to run database permission and scoring tests against an isolated PostgreSQL container; it does not modify the hosted project. Browser checks during development exercise local and shared gameplay, reordering, submission retry, answer reveal, host controls, and responsive layouts. Python Playwright and Chromium are validation tools, not app dependencies. Live project checks require the dashboard setup in HOSTING.md.
 
-With the local server running on port 3000, `python3 tests/browser_shared.py` runs the two-browser gameplay and connection-retry checks, and `python3 tests/browser_admin.py` checks the separate admin and player flows. Both use simulated Supabase responses and need Python Playwright and `/usr/bin/chromium` in the prepared cloud environment. These tests never send scores to your real project.
+With the local server running on port 3000, `python3 tests/browser_shared.py` checks two-browser gameplay and connection retries, `python3 tests/browser_admin.py` checks the separate admin and player flows, and `python3 tests/browser_qr.py` checks QR SVG encoding, download/print, automatic joining, and error states. All use simulated Supabase responses and need Python Playwright and `/usr/bin/chromium` in the prepared cloud environment. These tests never send scores to your real project.
 
 Run `npm run build` to generate `dist/` with only the public website files. The GitHub Pages workflow tests and builds the site on pushes to `main`. It requires GitHub Pages source set to **GitHub Actions**. Database scripts, tests, and repository metadata are excluded from the published site. Only a browser-safe publishable or anon key belongs in `config.json`; never use a secret or service-role key.

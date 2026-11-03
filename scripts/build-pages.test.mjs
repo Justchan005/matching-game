@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { buildPages } from './build-pages.mjs';
 
-const ASSETS = ['index.html', 'admin.html', 'styles.css', 'online.css', 'admin.css', 'app.mjs', 'admin.mjs', 'game-core.mjs', 'online.mjs', 'online-api.mjs'];
+const ASSETS = ['index.html', 'admin.html', 'styles.css', 'online.css', 'admin.css', 'app.mjs', 'admin.mjs', 'game-core.mjs', 'online.mjs', 'online-api.mjs', 'qr-code.mjs', 'qrcode-generator.mjs', 'qrcode-generator.LICENSE'];
 
 async function fixture(t, config = { supabaseUrl: '', supabaseKey: '' }) {
   const root = await mkdtemp(path.join(os.tmpdir(), 'flow-pages-'));

@@ -90,9 +90,15 @@ with sync_playwright() as p:
     a.screenshot(path='/tmp/shared-projector-mobile.png',full_page=True)
     a.locator('#projector-toggle').click()
     a.locator('#leave-event').click()
+    expect(a.locator('#qr-welcome')).to_be_visible()
+    expect(a.locator('.game-layout')).to_be_hidden()
+    a.locator('#practice-button').click()
+    expect(a.locator('.game-layout')).to_be_visible()
     expect(a.locator('#leaderboard-scope')).to_have_text('This device only')
     expect(a.locator('.flow-card')).to_have_count(9)
     a.reload(wait_until='networkidle')
+    expect(a.locator('.game-layout')).to_be_hidden()
+    a.locator('#practice-button').click()
     expect(a.locator('#leaderboard-scope')).to_have_text('This device only')
     assert a.locator('.leaderboard-row').count()==0, 'Shared scores must not go into local storage'
     assert not errors, errors

@@ -30,7 +30,7 @@
     </section>
 
     <div id="notice" class="notice" role="status" hidden></div>
-    <div class="game-layout">
+    <div class="game-layout" hidden>
       <aside class="briefing panel" aria-labelledby="scenario-title">
         <div class="panel-kicker"><span>THE SCENARIO</span><span class="scenario-number" id="scenario-number">01 / 01</span></div>
         <div class="flow-illustration" aria-hidden="true"><span class="mini-step">01</span><span class="mini-line">→</span><span class="mini-step">02</span><span class="mini-line">→</span><span class="mini-step">03</span><span class="mini-line">✓</span></div>
@@ -58,7 +58,7 @@
       </section>
     </div>
 
-    <section class="leaderboard panel" aria-labelledby="leaderboard-title">
+    <section class="leaderboard panel" aria-labelledby="leaderboard-title" hidden>
       <div class="section-heading"><div><p class="panel-kicker">A LITTLE FRIENDLY COMPETITION</p><h2 id="leaderboard-title">Round highlights</h2></div><span class="chip" id="leaderboard-scope">This device only</span></div>
       <p class="empty-state" id="empty-scores">Your first round starts the story. Play to add your team here.</p>
       <ol class="leaderboard-list" id="leaderboard-list"></ol>
@@ -69,7 +69,7 @@
 
   <dialog class="modal" id="help-dialog" aria-labelledby="help-title">
     <div class="modal-header"><h2 id="help-title">Find your flow.</h2><button class="close-button" type="button" data-close="help-dialog" aria-label="Close instructions">×</button></div>
-    <div class="modal-body"><p>Play on this device, or join a shared event to compete with players on other phones.</p><ol class="answer-list"><li>Read the situation, enter your name, then press <strong>Start round</strong>.</li><li>Put the shuffled steps in order from top to bottom. Drag on a computer, or use the up and down buttons on any device.</li><li>Press <strong>Check my flow</strong> when you agree on the sequence.</li></ol><p>You earn points for each step in the correct position, up to 100. Elapsed time breaks score ties; there is no round time limit.</p><p>In a shared event, the server checks your answer and records your name, score, and time. The leaderboard refreshes every five seconds. In local play, scores stay in this browser.</p><p>Your organiser prepares the scenario on the admin page and shares an event link. Open that link, or choose <strong>Join event</strong> and enter the event code. No player account is needed.</p><p class="help-text">Each scenario is scored against the host’s intended order. Talk through the revealed sequence together after your round.</p></div>
+    <div class="modal-body"><p>Scan your organiser’s QR code with your phone’s camera, then open the link. Your event opens automatically—no code entry or player account is needed.</p><ol class="answer-list"><li>Read the situation, enter your name, then press <strong>Start round</strong>.</li><li>Put the shuffled steps in order from top to bottom. Drag on a computer, or use the up and down buttons on any device.</li><li>Press <strong>Check my flow</strong> when you agree on the sequence.</li></ol><p>You earn points for each step in the correct position, up to 100. Elapsed time breaks score ties; there is no round time limit.</p><p>In a shared event, the server checks your answer and records your name, score, and time. The leaderboard refreshes every five seconds. In local play, scores stay in this browser.</p><p>Enter the name you want on the leaderboard, then start your round. If you open this page without an event invitation, you can choose <strong>Try a practice round</strong>; practice scores stay on that device.</p><p class="help-text">Each scenario is scored against the host’s intended order. Talk through the revealed sequence together after your round.</p></div>
     <div class="modal-footer"><button class="button primary" type="button" data-close="help-dialog">Got it <span aria-hidden="true">→</span></button></div>
   </dialog>
 

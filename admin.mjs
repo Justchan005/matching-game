@@ -1,5 +1,6 @@
 import { createOnlineClient, validateOnlineConfig } from './online-api.mjs';
 import { SAMPLE_SCENARIOS, validateScenario } from './game-core.mjs';
+import { createQrSvg } from './qr-code.mjs';
 
 const $ = (id) => document.getElementById(id);
 const SCENARIO_KEY = 'flow-state.scenarios.v1';
@@ -12,6 +13,7 @@ let eventVersion = 0;
 let scoreRequest = null;
 let pendingEventCode = new URL(location.href).searchParams.get('event');
 let customScenarios = [];
+let qrSvg = '';
 try {
   const stored = JSON.parse(localStorage.getItem(SCENARIO_KEY) || '[]');
   if (Array.isArray(stored)) customScenarios = stored.filter((item) => typeof item?.id === 'string' && item.id.startsWith('custom-') && validateScenario(item).valid);
@@ -38,6 +40,7 @@ function setBusy(value) {
   for (const field of document.querySelectorAll('#admin-dashboard button, #admin-dashboard input, #admin-dashboard select, #admin-signout, #custom-form button, #custom-form input, #custom-form textarea')) field.disabled = busy || !session;
   for (const field of document.querySelectorAll('#admin-login-form input, #admin-login-form button')) field.disabled = busy || !api;
   $('admin-close-event').disabled = busy || !session || !selectedEvent?.active;
+  for (const id of ['admin-download-qr', 'admin-print-qr']) $(id).disabled = busy || !session || !selectedEvent?.active || !qrSvg;
 }
 
 function renderScenarioOptions(preferred = $('admin-scenario').value) {
@@ -76,6 +79,9 @@ function clearSession() {
   $('admin-event-title').value = '';
   $('admin-event-panel').hidden = true;
   $('admin-share-url').value = '';
+  qrSvg = '';
+  $('admin-qr').replaceChildren();
+  $('admin-qr-title').textContent = '';
   $('admin-event-name').textContent = '';
   $('admin-leaderboard').replaceChildren();
   $('custom-form').reset();
@@ -130,6 +136,19 @@ function renderEvent() {
   $('admin-event-state').textContent = selectedEvent.active ? `OPEN · ${selectedEvent.code}` : 'CLOSED TO NEW ENTRIES';
   const playerUrl = makePlayerUrl(selectedEvent.code);
   $('admin-share-url').value = playerUrl.href;
+  $('admin-qr-title').textContent = selectedEvent.title;
+  $('admin-qr-availability').textContent = selectedEvent.active
+    ? 'Display it at your event or print a poster. Download saves a crisp SVG image.'
+    : 'This event is closed or expired. Create a new event and use its QR code to accept new players.';
+  try {
+    qrSvg = createQrSvg(playerUrl.href);
+    const documentSvg = new DOMParser().parseFromString(qrSvg, 'image/svg+xml');
+    $('admin-qr').replaceChildren(document.importNode(documentSvg.documentElement, true));
+  } catch {
+    qrSvg = '';
+    $('admin-qr').replaceChildren();
+    showNotice('The QR code could not be created. You can still copy the player invitation link below.');
+  }
   $('admin-player-link').href = playerUrl.href;
   const projectorUrl = new URL(playerUrl);
   projectorUrl.searchParams.set('view', 'leaderboard');
@@ -231,6 +250,27 @@ $('admin-copy-link').addEventListener('click', async () => {
   try { await navigator.clipboard.writeText($('admin-share-url').value); showNotice('Player link copied. Share it with your participants.'); }
   catch { $('admin-share-url').focus(); $('admin-share-url').select(); showNotice('Select and copy the player link above.'); }
 });
+$('admin-download-qr').addEventListener('click', () => {
+  if (busy || !session || !selectedEvent?.active || !qrSvg) return;
+  const objectUrl = URL.createObjectURL(new Blob([qrSvg], { type: 'image/svg+xml;charset=utf-8' }));
+  const link = document.createElement('a');
+  link.href = objectUrl;
+  link.download = `flow-state-${selectedEvent.code.replace(/[^a-z0-9-]/gi, '')}.svg`;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+});
+$('admin-print-qr').addEventListener('click', () => {
+  if (busy || !session || !selectedEvent?.active || !qrSvg) return;
+  document.body.classList.add('print-event-qr');
+  try { window.print(); }
+  catch {
+    document.body.classList.remove('print-event-qr');
+    showNotice('Printing is unavailable in this browser. Download the QR image to print it instead.');
+  }
+});
+window.addEventListener('afterprint', () => document.body.classList.remove('print-event-qr'));
 $('admin-scenario').addEventListener('change', renderScenarioPreview);
 $('admin-add-scenario').addEventListener('click', () => {
   if (busy || !session) return;

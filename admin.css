@@ -29,9 +29,37 @@
 #admin-close-event { color: #9c3d25; }
 #admin-share-url, #admin-event-code { font-family: var(--mono); font-size: 12px; }
 #admin-notice { margin-bottom: 24px; }
+.admin-qr-section { display: grid; grid-template-columns: minmax(230px, 320px) minmax(0, 1fr); gap: 32px; align-items: center; margin: 26px 0; padding: 24px; border: 1px solid var(--line); border-radius: 16px; background: #f4f1e9; }
+.admin-qr-poster { margin: 0; padding: 20px; border-radius: 12px; background: white; color: #111; text-align: center; }
+.admin-qr-poster .panel-kicker { justify-content: center; font-size: 9px; }
+.admin-qr-poster h3 { margin: 12px 0 10px; font-size: 23px; overflow-wrap: anywhere; }
+.admin-qr-image svg { display: block; width: 100%; height: auto; background: white; }
+.admin-qr-poster figcaption { margin-top: 12px; font-size: 13px; line-height: 1.7; }
+.admin-qr-copy h3 { font-size: 25px; }
+.admin-qr-copy > p { margin: 14px 0; color: #625b6b; font-size: 14px; line-height: 1.7; }
+.admin-qr-copy > .help-text { font-size: 12px; }
 @media (max-width: 800px) {
   .admin-grid, .admin-open { grid-template-columns: 1fr; }
   .admin-login, .admin-create, .admin-scenario-preview, .admin-open, .admin-event { padding: 23px; }
+  .admin-qr-section { grid-template-columns: 1fr; gap: 22px; padding: 16px; }
+  .admin-qr-poster { width: 100%; max-width: 340px; justify-self: center; padding: 16px; }
+}
+@media print {
+  @page { size: A4; margin: 18mm; }
+  body.print-event-qr { background: white; min-width: 0; }
+  body.print-event-qr .site-header, body.print-event-qr .admin-intro,
+  body.print-event-qr #admin-notice, body.print-event-qr .admin-session,
+  body.print-event-qr .admin-grid, body.print-event-qr .admin-open,
+  body.print-event-qr .page-footer, body.print-event-qr dialog,
+  body.print-event-qr .admin-event > :not(.admin-qr-section),
+  body.print-event-qr .admin-qr-copy { display: none !important; }
+  body.print-event-qr .page-shell { padding: 0; margin: 0; max-width: none; }
+  body.print-event-qr .admin-event { border: 0; padding: 0; margin: 0; box-shadow: none; }
+  body.print-event-qr .admin-qr-section { display: block; border: 0; padding: 0; margin: 0; background: white; }
+  body.print-event-qr .admin-qr-poster { max-width: none; width: 100%; padding: 10mm; break-inside: avoid; }
+  body.print-event-qr .admin-qr-poster h3 { font-size: 28pt; margin: 10mm 0; }
+  body.print-event-qr .admin-qr-image { max-width: 130mm; margin: auto; }
+  body.print-event-qr .admin-qr-poster figcaption { font-size: 16pt; margin-top: 8mm; }
 }
 @media (max-width: 420px) {
   .admin-open-form { align-items: stretch; flex-direction: column; }

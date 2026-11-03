@@ -4,8 +4,8 @@
 .online-top p:not(.panel-kicker) { margin-top: 9px; font-size: 13px; color: var(--muted); }
 .online-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
 .online-actions .button { white-space: nowrap; }
-#shared-event-details { border-top: 1px solid var(--line); padding-top: 20px; margin-top: 22px; }
-.shared-event-heading h3 { font-size: 23px; overflow-wrap: anywhere; }
+#shared-event-details { padding: 0; }
+.shared-event-heading h2 { font-size: 23px; overflow-wrap: anywhere; }
 .shared-event-heading .chip { flex-shrink: 0; }
 .share-row { align-items: flex-end; margin: 17px 0 10px; }
 .share-row .field { flex: 1; min-width: 0; }
@@ -14,7 +14,9 @@
 #shared-status { color: #5d6a50; font-size: 11px; }
 #shared-status.shared-status-error { color: #9c3d25; }
 .shared-toolbar .text-button { font-size: 11px; }
-#join-code { font-family: var(--mono); }
+.shared-join-instructions { margin: 12px 0 8px; font-size: 14px; }
+body.event-joined .intro { display: none; }
+#qr-welcome .online-actions { flex-shrink: 0; }
 body.projector-mode .site-header, body.projector-mode .intro, body.projector-mode .game-layout, body.projector-mode .page-footer { display: none; }
 body.projector-mode .page-shell { max-width: 1440px; padding-top: 28px; }
 body.projector-mode .online-top { display: none; }

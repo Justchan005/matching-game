@@ -51,9 +51,23 @@
 
       <section class="panel admin-event" id="admin-event-panel" aria-labelledby="admin-event-name" hidden>
         <div class="section-heading"><div><p class="panel-kicker">YOUR SHARED EVENT</p><h2 id="admin-event-name"></h2></div><span class="chip" id="admin-event-state"></span></div>
+        <section class="admin-qr-section" aria-labelledby="admin-qr-heading">
+          <figure id="admin-qr-poster" class="admin-qr-poster">
+            <p class="panel-kicker">FLOW STATE · SCAN TO PLAY</p>
+            <h3 id="admin-qr-title"></h3>
+            <div id="admin-qr" class="admin-qr-image" role="img" aria-label="QR code to join this event"></div>
+            <figcaption>Scan with your phone camera.<br>Enter your name, then start playing.</figcaption>
+          </figure>
+          <div class="admin-qr-copy">
+            <h3 id="admin-qr-heading">One scan. Straight into your event.</h3>
+            <p>This QR code opens the correct event automatically. Players do not need to type an event code or sign in.</p>
+            <div class="admin-form-actions"><button class="button primary" id="admin-download-qr" type="button">Download QR</button><button class="button secondary" id="admin-print-qr" type="button">Print QR</button></div>
+            <p class="help-text" id="admin-qr-availability">Display it at your event or print a poster. Download saves a crisp SVG image.</p>
+          </div>
+        </section>
         <div class="share-row"><div class="field"><label for="admin-share-url">Player invitation link</label><input id="admin-share-url" type="text" readonly></div><button class="button primary" id="admin-copy-link" type="button">Copy player link</button></div>
         <div class="admin-event-actions"><a class="button secondary" id="admin-player-link" href="./" target="_blank" rel="noopener">Open player page <span aria-hidden="true">↗</span></a><a class="button secondary" id="admin-projector-link" href="./" target="_blank" rel="noopener">Open projector view <span aria-hidden="true">↗</span></a><button class="text-button" id="admin-close-event" type="button">Close new entries</button></div>
-        <p class="help-text">Share the player link with participants. Names and scores are visible to anyone with that link. Closing an event stops new rounds; players already in a round can still finish.</p>
+        <p class="help-text">Names and scores are visible to anyone with the player link or QR code. Events expire after seven days, so create your event within seven days of the event date. Closing an event stops new rounds; players already in a round can still finish.</p>
         <div class="admin-score-heading"><h3>Live leaderboard</h3><button class="text-button" id="admin-refresh-scores" type="button">Refresh scores</button></div><p id="admin-score-status" role="status" aria-live="polite"></p><p class="empty-state" id="admin-empty-scores">No completed rounds yet.</p><ol class="leaderboard-list" id="admin-leaderboard"></ol><p class="help-text">Top 20 rounds. Scores come first; faster times break ties. Updates every five seconds.</p>
       </section>
     </div>

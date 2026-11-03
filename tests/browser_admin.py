@@ -136,11 +136,15 @@ with sync_playwright() as playwright:
         page.on("pageerror", lambda error: errors.append(str(error)))
 
     player.goto(BASE, wait_until="networkidle")
-    expect(player.locator("#join-event-button")).to_be_visible()
+    expect(player.locator("#qr-welcome")).to_be_visible()
+    expect(player.locator(".game-layout")).to_be_hidden()
+    assert player.locator("#join-code, #join-form, #join-event-button").count() == 0
     for selector in ["#host-event-button", "#host-event-dialog", "#host-login-form", "#host-create-form",
                      "#custom-form", "#customize-button", "#close-event", "#admin-login-form"]:
         assert player.locator(selector).count() == 0, f"Admin control found on player page: {selector}"
     expect(player.locator(".flow-card")).to_have_count(9)
+    player.locator("#practice-button").click()
+    expect(player.locator(".game-layout")).to_be_visible()
     assert_no_overflow(player)
 
     admin.goto(f"{BASE}admin.html?event={EXISTING_CODE}", wait_until="networkidle")

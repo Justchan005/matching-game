@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateOnlineConfig } from '../online-api.mjs';
 
-const RUNTIME_FILES = ['index.html', 'admin.html', 'styles.css', 'online.css', 'admin.css', 'app.mjs', 'admin.mjs', 'game-core.mjs', 'online.mjs', 'online-api.mjs'];
+const RUNTIME_FILES = ['index.html', 'admin.html', 'styles.css', 'online.css', 'admin.css', 'app.mjs', 'admin.mjs', 'game-core.mjs', 'online.mjs', 'online-api.mjs', 'qr-code.mjs', 'qrcode-generator.mjs', 'qrcode-generator.LICENSE'];
 const DEFAULT_ROOT = fileURLToPath(new URL('../', import.meta.url));
 
 async function requireRegularFile(filename) {

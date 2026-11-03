@@ -1,6 +1,6 @@
 # Publish a shared event
 
-The website runs on GitHub Pages. Supabase stores events, checks submitted sequences, measures round duration, and supplies the shared leaderboard. Players need a browser and the event link; they do not need an account. The admin signs in on a separate page to create and close events.
+The website runs on GitHub Pages. Supabase stores events, checks submitted sequences, measures round duration, and supplies the shared leaderboard. Players scan the event QR code with their phone camera to open the correct event directly, then enter their name and start. They do not type a code or need an account. Existing player invitation links also work. The admin signs in on a separate page to create and close events.
 
 - **Players:** https://justchan005.github.io/matching-game/
 - **Admin:** https://justchan005.github.io/matching-game/admin.html
@@ -55,10 +55,12 @@ The build copies only public browser assets to `dist/`. Repository metadata, SQL
 
 1. Open `https://justchan005.github.io/matching-game/admin.html` and sign in with the existing host account.
 2. Choose a scenario, or prepare a custom one in the admin page's scenario editor, then create an event.
-3. Copy and share its player link or code. The generated link opens the player page at `https://justchan005.github.io/matching-game/?event=EVENT_CODE`. All players joining that event use the same stored scenario; no admin login or setup controls appear on the player page.
-4. Ask players to enter the name or team name they want displayed on the shared leaderboard, then play and submit.
+3. Display the generated QR code from the event panel. Use **Download QR** to save an SVG for your event materials, or **Print QR** to print a poster. It contains the specific player invitation link, `https://justchan005.github.io/matching-game/?event=EVENT_CODE`. Do not use a QR code for the generic homepage or admin page.
+4. Players scan the QR code with their phone camera and open the link. The correct event is joined automatically. They enter the name or team name they want displayed on the shared leaderboard, then choose **Start round**, play, and submit. No manual code entry or player account is needed, and the timer starts only when they start a round.
 5. Use the admin page's projector link to open the shared leaderboard on another screen. It points to the player page with `?event=EVENT_CODE&view=leaderboard` and refreshes every five seconds while visible.
-6. On the admin page, close new entries when you want to stop new rounds. Rounds already started can still be submitted. Events stop accepting new rounds after seven days.
+6. On the admin page, close new entries when you want to stop new rounds. Rounds already started can still be submitted. Events expire seven days after creation, so create the event less than seven days before event-day scans. A closed or expired event's QR code cannot start new rounds; create a new event and use its new QR code if needed.
+
+The admin can still copy the player link for participants who prefer to open a link directly. QR generation happens locally in the browser with the bundled MIT-licensed `qrcode-generator` library; the link is not sent to an external QR service. The player homepage without an event shows QR scanning instructions and a separate **Try a practice round** option.
 
 To return to an existing event later, sign in on the admin page and enter its event code. You can also open `admin.html?event=EVENT_CODE` and sign in. Only the event's owner can close it. Admin sign-in sessions are kept in memory, so reloading the page requires signing in again. Keep participant links and event codes for the events you want to manage.
 
@@ -71,7 +73,7 @@ Only the server calculates a shared round's score and elapsed time. Editing brow
 Use two separate browsers or devices:
 
 1. Open the admin page and confirm event-management controls require signing in.
-2. Create an event as the host and join its player link on both devices. Check that the invite opens the player page and does not contain `admin.html`.
+2. Create an event as the host and scan its QR code on both devices. Check that it opens the specific player event without asking for a code, and that the invitation URL does not contain `admin.html`. Also check the downloaded SVG or printed poster with a phone camera before the event.
 3. Play as two different names and submit both rounds.
 4. Verify both names appear on both devices after the next refresh.
 5. Refresh a browser and confirm the shared results remain.
