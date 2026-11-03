@@ -1,15 +1,20 @@
 # Publish a shared event
 
-The website runs on GitHub Pages. Supabase stores events, checks submitted sequences, measures round duration, and supplies the shared leaderboard. Players need a browser and the event link; they do not need an account. The host signs in to create and close events.
+The website runs on GitHub Pages. Supabase stores events, checks submitted sequences, measures round duration, and supplies the shared leaderboard. Players need a browser and the event link; they do not need an account. The admin signs in on a separate page to create and close events.
+
+- **Players:** https://justchan005.github.io/matching-game/
+- **Admin:** https://justchan005.github.io/matching-game/admin.html
+
+These pages use the same Supabase project and existing host account. If the shared-event database is already installed, no new SQL migration is needed for the separate pages. Supabase authentication and ownership checks protect event management; separating the pages does not replace those checks.
 
 ## 1. Prepare Supabase
 
 This game's Supabase project URL is `https://unlgkvjarhvxrvabangt.supabase.co`. Open that project in the Supabase dashboard for the steps below.
 
 1. Open **SQL Editor** in that project.
-2. Copy the contents of `supabase/migrations/202610290001_shared_events.sql` into a new query and run it once. The migration creates the private game tables and the public functions used by the website.
+2. If it has not already been applied, copy the contents of `supabase/migrations/202610290001_shared_events.sql` into a new query and run it once. The migration creates the private game tables and the public functions used by the website.
 3. Under **Authentication → Providers → Email**, keep email/password sign-in enabled. In the authentication settings, disable **Allow new users to sign up** and anonymous sign-ins. Players do not use Supabase Auth; these settings limit who can become an event host.
-4. Under **Authentication → Users**, add the host's email address and password. Mark the email confirmed using the dashboard's auto-confirm option. Keep this password private; it belongs only in the host's sign-in form.
+4. Under **Authentication → Users**, add the host's email address and password if the account does not already exist. Mark the email confirmed using the dashboard's auto-confirm option. Keep this password private; enter it only in the admin page's sign-in form.
 5. Find the **Project URL** and **publishable key** in the project's Connect dialog or API settings. A key beginning with `sb_publishable_` is intended for browsers. The older **anon** key also works. Never use a secret key beginning with `sb_secret_`, a **service_role** key, a personal access token, or a database password in this website.
 
 The migration blocks direct access to the game tables. Players use limited functions to join an event, start a round, submit a sequence, and read that event's leaderboard. Host functions require an authenticated account and check ownership. Disable public sign-up before opening the site to participants.
@@ -48,12 +53,14 @@ The build copies only public browser assets to `dist/`. Repository metadata, SQL
 
 ## 4. Run an event
 
-1. Open the deployed game and use **Host event** to sign in with the host account.
-2. Choose or prepare the scenario, then create an event.
-3. Share its participant link or code. All players joining that event use the same stored scenario.
+1. Open `https://justchan005.github.io/matching-game/admin.html` and sign in with the existing host account.
+2. Choose a scenario, or prepare a custom one in the admin page's scenario editor, then create an event.
+3. Copy and share its player link or code. The generated link opens the player page at `https://justchan005.github.io/matching-game/?event=EVENT_CODE`. All players joining that event use the same stored scenario; no admin login or setup controls appear on the player page.
 4. Ask players to enter the name or team name they want displayed on the shared leaderboard, then play and submit.
-5. Open the same event on the projector's browser to show the leaderboard. It refreshes every five seconds while the page is visible.
-6. Close the event when you want to stop new rounds. Rounds already started can still be submitted. Events stop accepting new rounds after seven days.
+5. Use the admin page's projector link to open the shared leaderboard on another screen. It points to the player page with `?event=EVENT_CODE&view=leaderboard` and refreshes every five seconds while visible.
+6. On the admin page, close new entries when you want to stop new rounds. Rounds already started can still be submitted. Events stop accepting new rounds after seven days.
+
+To return to an existing event later, sign in on the admin page and enter its event code. You can also open `admin.html?event=EVENT_CODE` and sign in. Only the event's owner can close it. Admin sign-in sessions are kept in memory, so reloading the page requires signing in again. Keep participant links and event codes for the events you want to manage.
 
 The leaderboard contains the best 20 completed rounds for that event, ordered by score and then elapsed time. Repeat plays appear as separate rounds; names are display labels, not verified identities. A submitted round is recorded only once, including when a browser retries after a connection failure. A connection is required for shared events; local practice remains available separately.
 
@@ -63,12 +70,13 @@ Only the server calculates a shared round's score and elapsed time. Editing brow
 
 Use two separate browsers or devices:
 
-1. Create an event as the host and join its participant link on both devices.
-2. Play as two different names and submit both rounds.
-3. Verify both names appear on both devices after the next refresh.
-4. Refresh a browser and confirm the shared results remain.
-5. Verify the intended nine-step diagnosis order earns 100.
-6. Close the event as the host and confirm a new round cannot be started.
+1. Open the admin page and confirm event-management controls require signing in.
+2. Create an event as the host and join its player link on both devices. Check that the invite opens the player page and does not contain `admin.html`.
+3. Play as two different names and submit both rounds.
+4. Verify both names appear on both devices after the next refresh.
+5. Refresh a browser and confirm the shared results remain.
+6. Verify the intended nine-step diagnosis order earns 100.
+7. Close the event from the admin page and confirm a new round cannot be started.
 
 The host's computer does not need to keep PowerShell or a local server running after deployment. Hosting the game does not synchronize custom scenarios or scores previously saved in browser-only practice mode; create a shared event from the scenario to use it across devices.
 

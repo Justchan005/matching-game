@@ -164,7 +164,6 @@ function setRoundBusy(busy) {
   $('player-name').required = Boolean(sharedEvent);
   $('name-optional').hidden = Boolean(sharedEvent);
   $('public-name-note').hidden = !sharedEvent;
-  $('customize-button').disabled = busy || Boolean(sharedEvent);
   online?.setRoundBusy(busy);
 }
 
@@ -307,43 +306,16 @@ $('scenario-select').addEventListener('change', () => {
   prepareRound();
 });
 $('help-button').addEventListener('click', () => $('help-dialog').showModal());
-$('customize-button').addEventListener('click', () => { $('custom-error').hidden = true; $('custom-dialog').showModal(); });
 document.querySelectorAll('[data-close]').forEach((button) => button.addEventListener('click', () => $(button.dataset.close).close()));
 document.querySelectorAll('dialog').forEach((dialog) => dialog.addEventListener('click', (event) => {
   if (event.target !== dialog) return;
   const rect = dialog.getBoundingClientRect();
   if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
 }));
-$('custom-form').addEventListener('submit', (event) => {
-  event.preventDefault();
-  const custom = {
-    id: `custom-${typeof crypto.randomUUID === 'function' ? crypto.randomUUID() : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`}`,
-    title: $('custom-name').value.trim(),
-    description: $('custom-description').value.trim(),
-    category: 'YOUR EVENT',
-    steps: $('custom-steps').value.trim().split(/\r?\n/).map((step) => step.trim()),
-  };
-  const validation = validateScenario(custom);
-  if (!validation.valid) {
-    $('custom-error').textContent = validation.errors.join(' ');
-    $('custom-error').hidden = false;
-    return;
-  }
-  customScenarios.push(custom);
-  scenarios.push(custom);
-  saveStored(STORAGE.scenarios, customScenarios);
-  scenario = custom;
-  renderOptions();
-  prepareRound();
-  $('custom-dialog').close();
-  $('custom-form').reset();
-  $('start-round').focus();
-});
 
 renderOptions();
 prepareRound();
 online = initOnline({
-  getScenarios: () => scenarios,
   notice,
   onActionBusy(busy) {
     $('start-round').disabled = busy || joinBlocked || sharedEvent?.active === false || ['starting', 'submitting'].includes(phase);

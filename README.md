@@ -2,7 +2,12 @@
 
 A browser game for an event: read a scenario, arrange shuffled steps, and check the sequence. The included patient journey uses the nine steps supplied by the event organiser.
 
-Shared events let people play from separate phones with one live leaderboard. A host signs in, creates an event, and shares its link. Supabase checks each submitted sequence and records the score and elapsed time. The leaderboard refreshes every five seconds and includes a projector view. Local practice still works on one device.
+Shared events let people play from separate phones with one live leaderboard. The admin signs in on a separate page, creates an event, and shares its player link. Supabase checks each submitted sequence and records the score and elapsed time. The leaderboard refreshes every five seconds and includes a projector view. Local practice still works on one device.
+
+- [Player page](https://justchan005.github.io/matching-game/): join an event, arrange the steps, and view scores. Players do not need an account.
+- [Admin page](https://justchan005.github.io/matching-game/admin.html): sign in, prepare scenarios, create events, share player links, and close new entries.
+
+The admin page uses the existing Supabase host email and password. Splitting the pages requires no new account or database migration if the shared-event setup is already complete. Event management remains protected by Supabase authentication and server-side ownership checks.
 
 See [HOSTING.md](HOSTING.md) for GitHub Pages deployment, the Supabase database script, and host account setup. Public Supabase connection details are already in `config.json`; the database migration and host account must be set up in the dashboard before shared play works.
 
@@ -42,9 +47,11 @@ The default sequence is:
 
 ## Customize
 
-Use **Add your scenario** before the round to enter a title, description, and 3–12 distinct steps in the intended order. The game shuffles them for players. Scenarios and the best eight rounds per scenario are saved in this browser's local storage. If storage is unavailable, play continues in memory with a notice. Reloading the page abandons an unfinished round.
+Open the **Admin page** and sign in to prepare a custom scenario. Enter a title, description, and 3–12 distinct steps in the intended order. Scenario drafts are saved in this browser's local storage; the game shuffles the steps for players. If browser storage is unavailable, drafts remain available only while the page is open.
 
-To share a custom scenario across devices, prepare it locally, choose **Host event**, sign in, then select that scenario when creating the event. The shared copy is stored on the server and cannot be edited mid-event. Players use the invite link without an account. Each event has its own top 20 rounds; local practice keeps its separate best eight rounds in browser storage. Names are display labels rather than verified identities, and repeat attempts appear separately.
+To share a scenario across devices, select it when creating an event on the admin page, then copy the generated player link. The link opens the player page with the event code, for example `/?event=EVENT_CODE`; it never sends players to the admin page. The shared copy is stored on the server and cannot be edited mid-event. The admin can reopen an existing event by its code to view results and close new entries. A projector link opens the player leaderboard with `?event=EVENT_CODE&view=leaderboard`.
+
+Each shared event has its own top 20 rounds; local practice keeps its separate best eight rounds in browser storage. Names are display labels rather than verified identities, and repeat attempts appear separately. Reloading the player page abandons an unfinished round.
 
 ## Validate
 
@@ -54,6 +61,6 @@ npm test
 
 The Node tests cover game logic, Supabase requests and public-key validation, and static deployment output. `npm run test:db` uses Docker to run database permission and scoring tests against an isolated PostgreSQL container; it does not modify the hosted project. Browser checks during development exercise local and shared gameplay, reordering, submission retry, answer reveal, host controls, and responsive layouts. Python Playwright and Chromium are validation tools, not app dependencies. Live project checks require the dashboard setup in HOSTING.md.
 
-With the local server running on port 3000, `python3 tests/browser_shared.py` runs the two-browser gameplay and connection-retry checks using simulated Supabase responses. It needs Python Playwright and `/usr/bin/chromium` in the prepared cloud environment. These tests never send scores to your real project.
+With the local server running on port 3000, `python3 tests/browser_shared.py` runs the two-browser gameplay and connection-retry checks, and `python3 tests/browser_admin.py` checks the separate admin and player flows. Both use simulated Supabase responses and need Python Playwright and `/usr/bin/chromium` in the prepared cloud environment. These tests never send scores to your real project.
 
 Run `npm run build` to generate `dist/` with only the public website files. The GitHub Pages workflow tests and builds the site on pushes to `main`. It requires GitHub Pages source set to **GitHub Actions**. Database scripts, tests, and repository metadata are excluded from the published site. Only a browser-safe publishable or anon key belongs in `config.json`; never use a secret or service-role key.

@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { buildPages } from './build-pages.mjs';
 
-const ASSETS = ['index.html', 'styles.css', 'online.css', 'app.mjs', 'game-core.mjs', 'online.mjs', 'online-api.mjs'];
+const ASSETS = ['index.html', 'admin.html', 'styles.css', 'online.css', 'admin.css', 'app.mjs', 'admin.mjs', 'game-core.mjs', 'online.mjs', 'online-api.mjs'];
 
 async function fixture(t, config = { supabaseUrl: '', supabaseKey: '' }) {
   const root = await mkdtemp(path.join(os.tmpdir(), 'flow-pages-'));
@@ -27,7 +27,9 @@ test('publishes only browser assets and replaces stale output', async (t) => {
   const result = await buildPages({ root, env: {} });
   assert.equal(result.configured, false);
   assert.deepEqual((await readdir(result.outDir)).sort(), [...ASSETS, 'config.json', '.nojekyll'].sort());
-  assert.equal(await readFile(path.join(result.outDir, 'app.mjs'), 'utf8'), 'public asset: app.mjs');
+  for (const name of ASSETS) {
+    assert.equal(await readFile(path.join(result.outDir, name), 'utf8'), `public asset: ${name}`);
+  }
   assert.deepEqual(JSON.parse(await readFile(path.join(result.outDir, 'config.json'), 'utf8')), { supabaseUrl: '', supabaseKey: '' });
 });
 

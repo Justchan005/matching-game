@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f6f2">
+  <meta name="description" content="Create and manage Flow State events, share player links, and follow your leaderboard.">
+  <title>Flow State — Event admin</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23f15533'/%3E%3Cpath d='M18 19h28M18 32h20M18 45h12' stroke='white' stroke-width='7'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="online.css">
+  <link rel="stylesheet" href="admin.css">
+  <script type="module" src="admin.mjs"></script>
+</head>
+<body class="admin-page">
+  <header class="site-header">
+    <a class="brand" href="admin.html" aria-label="Flow State admin home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span class="brand-name">flow state<span class="brand-caption">EVENT ADMIN</span></span></a>
+    <nav class="header-actions" aria-label="Admin navigation"><a class="button secondary" href="./">Player page <span aria-hidden="true">→</span></a><button class="text-button" id="admin-signout" type="button" hidden>Sign out</button></nav>
+  </header>
+  <main class="page-shell">
+    <section class="intro admin-intro"><p class="eyebrow">YOUR EVENT, YOUR FLOW</p><h1>Set the scene.<br><span class="accent">Bring everyone together.</span></h1><p class="intro-copy">Prepare your scenarios, create an event, and give your players one link to join.</p></section>
+    <div class="notice" id="admin-notice" role="alert" hidden></div>
+
+    <section class="panel admin-login" id="admin-login-panel" aria-labelledby="admin-login-title">
+      <p class="panel-kicker">HOST ACCESS</p><h2 id="admin-login-title">Welcome back, host.</h2><p>Sign in with your game-host account to manage events. Players use their own page and do not need an account.</p>
+      <form id="admin-login-form" class="admin-form">
+        <div class="field"><label for="admin-email">Email address</label><input id="admin-email" type="email" autocomplete="username" required></div>
+        <div class="field"><label for="admin-password">Password</label><input id="admin-password" type="password" autocomplete="current-password" required></div>
+        <button class="button primary" id="admin-login-submit" type="submit" disabled>Sign in <span aria-hidden="true">→</span></button>
+      </form>
+      <p class="help-text">Use the host account created for this game. Your sign-in lasts while this admin page stays open.</p>
+    </section>
+
+    <div id="admin-dashboard" hidden>
+      <div class="admin-session"><span class="chip">ADMIN</span><p id="admin-signed-in"></p></div>
+      <div class="admin-grid">
+        <section class="panel admin-create" aria-labelledby="admin-create-title">
+          <p class="panel-kicker">START SOMETHING TOGETHER</p><h2 id="admin-create-title">Create an event</h2><p class="admin-copy">Choose a scenario for every player. Each event has its own leaderboard and accepts rounds for seven days.</p>
+          <form id="admin-create-form" class="admin-form">
+            <div class="field"><label for="admin-event-title">Event name</label><input id="admin-event-title" type="text" maxlength="80" required placeholder="e.g. Patient Journey Challenge"></div>
+            <div class="field"><label for="admin-scenario">Scenario for everyone</label><select id="admin-scenario" required></select></div>
+            <div class="admin-form-actions"><button class="button primary" id="admin-create-submit" type="submit">Create event <span aria-hidden="true">→</span></button><button class="button secondary" id="admin-add-scenario" type="button">＋ Add scenario</button></div>
+          </form>
+        </section>
+        <section class="panel admin-scenario-preview" aria-labelledby="admin-preview-title">
+          <p class="panel-kicker">HOST PREVIEW · INTENDED ORDER</p><h2 id="admin-preview-title"></h2><p class="admin-copy" id="admin-preview-description"></p><ol class="answer-list" id="admin-preview-steps"></ol><p class="help-text">Players receive these steps shuffled. A created event keeps its original scenario.</p>
+        </section>
+      </div>
+
+      <section class="panel admin-open" aria-labelledby="admin-open-title"><div><p class="panel-kicker">PICK UP WHERE YOU LEFT OFF</p><h2 id="admin-open-title">Open an existing event</h2><p class="help-text">Paste its code or player link. Only the account that created an event can close it.</p></div><form id="admin-open-form" class="admin-open-form"><div class="field"><label for="admin-event-code">Event code or link</label><input id="admin-event-code" type="text" maxlength="200" required autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="12-character event code"></div><button class="button secondary" type="submit">Open event</button></form></section>
+
+      <section class="panel admin-event" id="admin-event-panel" aria-labelledby="admin-event-name" hidden>
+        <div class="section-heading"><div><p class="panel-kicker">YOUR SHARED EVENT</p><h2 id="admin-event-name"></h2></div><span class="chip" id="admin-event-state"></span></div>
+        <div class="share-row"><div class="field"><label for="admin-share-url">Player invitation link</label><input id="admin-share-url" type="text" readonly></div><button class="button primary" id="admin-copy-link" type="button">Copy player link</button></div>
+        <div class="admin-event-actions"><a class="button secondary" id="admin-player-link" href="./" target="_blank" rel="noopener">Open player page <span aria-hidden="true">↗</span></a><a class="button secondary" id="admin-projector-link" href="./" target="_blank" rel="noopener">Open projector view <span aria-hidden="true">↗</span></a><button class="text-button" id="admin-close-event" type="button">Close new entries</button></div>
+        <p class="help-text">Share the player link with participants. Names and scores are visible to anyone with that link. Closing an event stops new rounds; players already in a round can still finish.</p>
+        <div class="admin-score-heading"><h3>Live leaderboard</h3><button class="text-button" id="admin-refresh-scores" type="button">Refresh scores</button></div><p id="admin-score-status" role="status" aria-live="polite"></p><p class="empty-state" id="admin-empty-scores">No completed rounds yet.</p><ol class="leaderboard-list" id="admin-leaderboard"></ol><p class="help-text">Top 20 rounds. Scores come first; faster times break ties. Updates every five seconds.</p>
+      </section>
+    </div>
+    <footer class="page-footer"><span>For the people behind the event.</span><a href="./">Go to player page →</a></footer>
+  </main>
+
+  <dialog class="modal" id="custom-dialog" aria-labelledby="custom-title"><form id="custom-form"><div class="modal-header"><h2 id="custom-title">Create your scenario.</h2><button class="close-button" type="button" data-close-custom aria-label="Close scenario editor">×</button></div><div class="modal-body"><p>Give players a situation and set its intended sequence.</p><div class="field"><label for="custom-name">Scenario title</label><input id="custom-name" type="text" maxlength="80" required></div><div class="field"><label for="custom-description">What is happening?</label><textarea id="custom-description" rows="3" maxlength="500" required></textarea></div><div class="field"><label for="custom-steps">Steps in the correct order</label><textarea id="custom-steps" rows="8" required aria-describedby="custom-steps-help" placeholder="First action&#10;Second action&#10;Third action"></textarea><p class="help-text" id="custom-steps-help">One step per line. Add 3–12 unique steps, up to 160 characters each.</p></div><p class="form-error" id="custom-error" role="alert" hidden></p><p class="help-text">The draft stays in this browser. Creating an event shares a copy with all its players.</p></div><div class="modal-footer"><button class="button secondary" type="button" data-close-custom>Cancel</button><button class="button primary" type="submit">Save scenario</button></div></form></dialog>
+  <noscript>This admin page needs JavaScript enabled.</noscript>
+</body>
+</html>

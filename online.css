@@ -14,9 +14,6 @@
 #shared-status { color: #5d6a50; font-size: 11px; }
 #shared-status.shared-status-error { color: #9c3d25; }
 .shared-toolbar .text-button { font-size: 11px; }
-.online-form { display: grid; gap: 17px; }
-.online-form > p { color: var(--muted); font-size: 13px; line-height: 1.7; }
-#host-signout { justify-self: start; }
 #join-code { font-family: var(--mono); }
 body.projector-mode .site-header, body.projector-mode .intro, body.projector-mode .game-layout, body.projector-mode .page-footer { display: none; }
 body.projector-mode .page-shell { max-width: 1440px; padding-top: 28px; }
